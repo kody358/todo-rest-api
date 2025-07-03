@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class Todo extends Model
 {
@@ -27,7 +28,9 @@ class Todo extends Model
     ];
 
     /**
-     * Todoが属するユーザーを返す
+     * ユーザーとのリレーション
+     *
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -35,17 +38,23 @@ class Todo extends Model
     }
 
     /**
-     * 完了済みのタスクを返す
+     * 完了済みタスクを返す
+     *
+     * @param Builder $query
+     * @return Builder
      */
-    public function scopeCompleted($query)
+    public function scopeCompleted(Builder $query): Builder
     {
         return $query->where('completed', true);
     }
 
     /**
-     * 未完了のタスクを返す
+     * 未完了タスクを返す
+     *
+     * @param Builder $query
+     * @return Builder
      */
-    public function scopePending($query)
+    public function scopePending(Builder $query): Builder
     {
         return $query->where('completed', false);
     }

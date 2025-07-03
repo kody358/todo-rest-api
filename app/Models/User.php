@@ -49,7 +49,9 @@ class User extends Authenticatable
     }
 
     /**
-     * このユーザーが所有するTodo一覧を返す
+     * Todoとのリレーション
+     *
+     * @return HasMany
      */
     public function todos(): HasMany
     {
