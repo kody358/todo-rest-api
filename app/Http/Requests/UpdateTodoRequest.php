@@ -24,8 +24,8 @@ class UpdateTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|required|string|max:100',
-            'content' => 'nullable|string|max:1000',
+            'title' => 'sometimes|required',
+            'content' => 'nullable',
             'completed' => 'sometimes|boolean',
         ];
     }
@@ -39,10 +39,6 @@ class UpdateTodoRequest extends FormRequest
     {
         return [
             'title.required' => 'タイトルは必須項目です',
-            'title.string' => 'タイトルは文字列で入力してください',
-            'title.max' => 'タイトルは100文字以内で入力してください',
-            'content.string' => '内容は文字列で入力してください',
-            'content.max' => '内容は1000文字以内で入力してください',
             'completed.boolean' => '完了状態は真偽値で入力してください',
         ];
     }

@@ -15,12 +15,15 @@ class CreateTodoAction
      */
     public function __invoke(StoreTodoRequest $request): Todo
     {
-        $validated = $request->validated();
+        $data = $request->only(['title', 'content']);
 
         // 認証されたユーザーのIDを設定
-        $validated['user_id'] = $request->user()->id;
+        $data['user_id'] = $request->user()->id;
+        
+        // completedのデフォルト値を設定
+        $data['completed'] = $data['completed'] ?? false;
 
-        $todo = Todo::create($validated);
+        $todo = Todo::create($data);
         $todo->load('user');
 
         return $todo;

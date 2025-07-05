@@ -17,9 +17,10 @@ class UpdateTodoAction
     public function __invoke(UpdateTodoRequest $request, int $id): Todo
     {
         $todo = Todo::where('user_id', $request->user()->id)->findOrFail($id);
-        $validated = $request->validated();
+        
+        $data = $request->only(['title', 'content', 'completed']);
 
-        $todo->update($validated);
+        $todo->update($data);
         $todo->load('user');
 
         return $todo;

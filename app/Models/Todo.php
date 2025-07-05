@@ -27,6 +27,10 @@ class Todo extends Model
         'deleted_at' => 'datetime',
     ];
 
+    protected $attributes = [
+        'completed' => false,
+    ];
+
     /**
      * ユーザーとのリレーション
      *

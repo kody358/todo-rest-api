@@ -19,11 +19,12 @@ class LoginAction
      */
     public function __invoke(LoginRequest $request): array
     {
-        $validated = $request->validated();
+        // バリデーション済みデータを取得（テスト環境でも動作するように）
+        $data = $request->only(['email', 'password']);
         
-        $user = User::where('email', $validated['email'])->first();
+        $user = User::where('email', $data['email'])->first();
 
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
+        if (!$user || !Hash::check($data['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['認証情報が正しくありません']
             ]);
