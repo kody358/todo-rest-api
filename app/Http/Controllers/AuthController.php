@@ -4,13 +4,76 @@ namespace App\Http\Controllers;
 
 use App\Actions\LoginAction;
 use App\Actions\LogoutAction;
+use App\Actions\RegisterAction;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 class AuthController extends Controller
 {
+    /**
+     * ユーザー登録
+     *
+     * @OA\Post(
+     *     path="/api/register",
+     *     summary="ユーザー登録",
+     *     description="新しいユーザーを登録し、認証トークンを取得します",
+     *     tags={"認証"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "password", "password_confirmation"},
+     *             @OA\Property(property="name", type="string", example="田中太郎", description="ユーザー名"),
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com", description="メールアドレス"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123", description="パスワード（8文字以上）"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password", example="password123", description="パスワード確認")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="登録成功",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="ユーザー登録が完了しました"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="田中太郎"),
+     *                     @OA\Property(property="email", type="string", example="user@example.com"),
+     *                     @OA\Property(property="created_at", type="string", format="date-time"),
+     *                     @OA\Property(property="updated_at", type="string", format="date-time")
+     *                 ),
+     *                 @OA\Property(property="token", type="string", example="1|abcdef123456...")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="バリデーションエラー",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     *
+     * @param RegisterRequest $request
+     * @param RegisterAction $registerAction
+     * @return JsonResponse
+     */
+    public function register(RegisterRequest $request, RegisterAction $registerAction): JsonResponse
+    {
+        $result = $registerAction($request);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ユーザー登録が完了しました',
+            'data' => $result,
+        ], 201);
+    }
+
     /**
      * ログイン
      *

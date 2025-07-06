@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">Todo管理</h1>
       <div class="flex items-center space-x-4">
-        <span class="text-gray-600">こんにちは、{{ user?.name }}さん</span>
+        <span class="text-gray-600">{{ user?.name }}</span>
         <button
           @click="handleLogout"
           class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"

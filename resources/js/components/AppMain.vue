@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- ログイン状態に応じて表示を切り替え -->
-    <LoginForm v-if="!isAuthenticated" @login-success="handleLoginSuccess" />
+    <AuthView v-if="!isAuthenticated" @auth-success="handleAuthSuccess" />
     <TodoApp v-else />
   </div>
 </template>
@@ -9,12 +9,12 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuth } from '../composables/useAuth'
-import LoginForm from './LoginForm.vue'
+import AuthView from './AuthView.vue'
 import TodoApp from './TodoApp.vue'
 
 const { isAuthenticated, login } = useAuth()
 
-const handleLoginSuccess = (authData) => {
+const handleAuthSuccess = (authData) => {
   login(authData)
 }
 </script> 

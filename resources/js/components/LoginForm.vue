@@ -41,6 +41,16 @@
             {{ loading ? 'ログイン中...' : 'ログイン' }}
           </button>
         </div>
+
+        <div class="text-center">
+          <button
+            type="button"
+            @click="$emit('switch-to-register')"
+            class="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
+          >
+            アカウントをお持ちでない方はこちら
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -49,7 +59,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 
-const emit = defineEmits(['login-success'])
+const emit = defineEmits(['login-success', 'switch-to-register'])
 
 const form = reactive({
   email: '',
