@@ -1,61 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Todo REST API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 概要
 
-## About Laravel
+Laravelを使用したTodo管理RESTAPIです。ユーザー認証機能とTodoのCRUD操作を提供します。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 主な機能
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **ユーザー認証**: 新規登録・ログイン・ログアウト
+- **Todo管理**: 作成・取得・更新・削除・復元
+- **フィルタリング**: 完了状態による絞り込み
+- **ソート**: 作成日時・更新日時・タイトル順
+- **ページネーション**: 1ページ15件表示（最大100件まで設定可能）
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 技術スタック
 
-## Learning Laravel
+- **言語**: PHP 8.2
+- **フレームワーク**: Laravel 12
+- **認証**: Laravel Sanctum（トークンベース）
+- **データベース**: SQLite（デフォルト）
+- **開発環境**: Docker（Laravel Sail）
+- **テスト**: PHPUnit
+- **API仕様**: Swagger/OpenAPI
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## アーキテクチャ
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 設計パターン
+- **MVC + Actionパターン**: ビジネスロジックをActionクラスに分離
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### ディレクトリ構成
+```
+app/
+├── Actions/           # ビジネスロジック
+├── Http/
+│   ├── Controllers/   # APIコントローラー
+│   └── Requests/      # リクエストバリデーション
+└── Models/           # データモデル
+```
 
-## Laravel Sponsors
+## APIエンドポイント
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 認証系
+- `POST /api/register` - ユーザー登録
+- `POST /api/login` - ログイン
+- `POST /api/logout` - ログアウト
+- `GET /api/user` - ユーザー情報取得
 
-### Premium Partners
+### Todo系（認証必須）
+- `GET /api/todos` - Todo一覧取得
+- `POST /api/todos` - Todo作成
+- `GET /api/todos/{id}` - Todo詳細取得
+- `PUT /api/todos/{id}` - Todo更新
+- `DELETE /api/todos/{id}` - Todo削除
+- `PATCH /api/todos/{id}/restore` - Todo復元
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 動作の流れ
 
-## Contributing
+1. **ユーザー登録/ログイン**
+   - 新規ユーザーはメールアドレスとパスワードで登録
+   - 認証トークンを発行し、以降のAPI呼び出しで使用
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Todo操作**
+   - 認証されたユーザーのみ自分のTodoを操作可能
+   - 作成・更新・削除・復元の各操作に対応
+   - ソフトデリートにより削除されたTodoも復元可能
 
-## Code of Conduct
+3. **データ取得**
+   - ページネーション付きでTodo一覧を取得
+   - 完了状態でのフィルタリング
+   - 作成日時・更新日時・タイトル順でのソート
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 開発環境構築
 
-## Security Vulnerabilities
+```bash
+# GitHubからプロジェクトをクローン
+git clone https://github.com/kody358/todo-rest-api.git
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# プロジェクトディレクトリに移動
+cd todo-rest-api
 
-## License
+# Laravel Sailの起動（初回はイメージのビルドも実行）
+./vendor/bin/sail up -d
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# データベースマイグレーション実行
+./vendor/bin/sail artisan migrate
+
+# 初期データの投入（任意）
+./vendor/bin/sail artisan db:seed
+```
+
+開発サーバーにアクセス: `http://localhost`
+
+## テストユーザー情報
+
+初期データを投入した場合、以下のテストユーザーでログインできます：
+
+- **メールアドレス**: test@example.com
+- **パスワード**: password
+- **名前**: テストユーザー
+
+## テスト実行
+
+```bash
+# 全テスト実行
+php artisan test
+```
+
+## API仕様書
+
+Swagger UIでAPI仕様を確認：
+- 開発環境: `http://localhost/api/documentation`
