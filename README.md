@@ -14,13 +14,22 @@ Laravelを使用したTodo管理RESTAPIです。ユーザー認証機能とTodo�
 
 ## 技術スタック
 
+### バックエンド
 - **言語**: PHP 8.2
 - **フレームワーク**: Laravel 12
 - **認証**: Laravel Sanctum（トークンベース）
 - **データベース**: SQLite（デフォルト）
-- **開発環境**: Docker（Laravel Sail）
-- **テスト**: PHPUnit
 - **API仕様**: Swagger/OpenAPI
+
+### フロントエンド
+- **フレームワーク**: Vue.js 3.5
+- **ビルドツール**: Vite 6.2
+- **スタイリング**: TailwindCSS 4.0
+- **HTTP通信**: Axios
+
+### 開発環境
+- **コンテナ**: Docker（Laravel Sail）
+- **テスト**: PHPUnit
 
 ## アーキテクチャ
 
@@ -81,6 +90,9 @@ cd todo-rest-api
 # SQLiteデータベースファイルの作成
 touch database/database.sqlite
 
+# フロントエンドの依存関係をインストール
+npm install
+
 # Laravel Sailの起動（初回はイメージのビルドも実行）
 ./vendor/bin/sail up -d
 
@@ -89,9 +101,16 @@ touch database/database.sqlite
 
 # 初期データの投入（任意）
 ./vendor/bin/sail artisan db:seed
+
+# フロントエンドの開発サーバー起動（別ターミナル）
+npm run dev
 ```
 
-開発サーバーにアクセス: `http://localhost`
+## アクセス方法
+
+- **フロントエンド**: `http://localhost:5173` (Vite開発サーバー)
+- **バックエンド**: `http://localhost` (Laravel Sail)
+- **API**: `http://localhost/api`
 
 ## テストユーザー情報
 
