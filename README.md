@@ -78,6 +78,9 @@ git clone https://github.com/kody358/todo-rest-api.git
 # プロジェクトディレクトリに移動
 cd todo-rest-api
 
+# SQLiteデータベースファイルの作成
+touch database/database.sqlite
+
 # Laravel Sailの起動（初回はイメージのビルドも実行）
 ./vendor/bin/sail up -d
 
