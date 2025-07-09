@@ -122,17 +122,29 @@ cd todo-rest-api
 # SQLiteデータベースファイルの作成
 touch database/database.sqlite
 
+# PHPの依存関係をインストール
+composer install
+
+# 環境設定ファイルのコピーと設定
+cp .env.example .env
+
 # フロントエンドの依存関係をインストール
 npm install
 
 # Laravel Sailの起動（初回はイメージのビルドも実行）
 ./vendor/bin/sail up -d
 
+# アプリケーションキーを生成
+./vendor/bin/sail artisan key:generate
+
 # データベースマイグレーション実行
 ./vendor/bin/sail artisan migrate
 
 # 初期データの投入（任意）
 ./vendor/bin/sail artisan db:seed
+
+# フロントエンドアセットをビルド
+npm run build
 
 # フロントエンドの開発サーバー起動（別ターミナル）
 npm run dev
@@ -155,6 +167,10 @@ npm run dev
 ## テスト実行
 
 ```bash
+
 # 全テスト実行
+./vendor/bin/sail artisan test
+
+# または通常のPHP環境の場合
 php artisan test
 ```
