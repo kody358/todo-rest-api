@@ -44,6 +44,38 @@ app/
 │   ├── Controllers/   # APIコントローラー
 │   └── Requests/      # リクエストバリデーション
 └── Models/           # データモデル
+
+resources/
+├── js/
+│   ├── components/    # Vue.js コンポーネント
+│   ├── composables/   # Vue.js コンポーザブル関数
+│   └── app.js         # フロントエンドエントリーポイント
+├── css/
+│   └── app.css        # スタイルシート
+└── views/
+    └── todos/
+        └── index.blade.php  # Vue.js埋め込み用Bladeテンプレート
+```
+
+### データベース設計
+
+**テーブル構造**
+```sql
+users テーブル:
+- id (Primary Key)
+- name (VARCHAR)
+- email (VARCHAR, UNIQUE)
+- password (VARCHAR, HASHED)
+- created_at, updated_at
+
+todos テーブル:
+- id (Primary Key)
+- user_id (Foreign Key → users.id)
+- title (VARCHAR)
+- content (TEXT, NULLABLE)
+- completed (BOOLEAN, DEFAULT: false)
+- created_at, updated_at
+- deleted_at (Soft Delete)
 ```
 
 ## APIエンドポイント
@@ -108,9 +140,9 @@ npm run dev
 
 ## アクセス方法
 
-- **フロントエンド**: `http://localhost:5173` (Vite開発サーバー)
-- **バックエンド**: `http://localhost` (Laravel Sail)
-- **API**: `http://localhost/api`
+- **メインアプリケーション**: `http://localhost` (Bladeテンプレート経由でVue.jsアプリ表示)
+- **API**: `http://localhost/api` (REST API)
+- **Swagger**: `http://localhost/api/documentation` (API仕様書)
 
 ## テストユーザー情報
 
@@ -126,8 +158,3 @@ npm run dev
 # 全テスト実行
 php artisan test
 ```
-
-## API仕様書
-
-Swagger UIでAPI仕様を確認：
-- 開発環境: `http://localhost/api/documentation`
